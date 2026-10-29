@@ -4,141 +4,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Một câu hỏi nhỏ</title>
+<title>Một điều bất ngờ dành cho bạn</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
+  min-height: 100%;
+}
+
+body {
   min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 24px;
-  font-family: Arial, sans-serif;
-  color: #252a31;
-  background: #f4f5f7;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: #343047;
+  background: linear-gradient(135deg, #fff0f5, #f0edff, #e6f7ff);
+  overflow-x: hidden;
+}
+
+.decoration {
+  position: fixed;
+  pointer-events: none;
+  user-select: none;
+  animation: float 5s ease-in-out infinite;
+}
+
+.heart-one {
+  top: 12%;
+  left: 12%;
+  font-size: 43px;
+}
+
+.star-one {
+  top: 18%;
+  right: 13%;
+  font-size: 34px;
+  animation-delay: -2s;
+}
+
+.heart-two {
+  bottom: 14%;
+  right: 12%;
+  font-size: 39px;
+  animation-delay: -3s;
+}
+
+.star-two {
+  bottom: 17%;
+  left: 14%;
+  font-size: 30px;
+  animation-delay: -1.5s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(5deg);
+  }
 }
 
 .card {
+  position: relative;
   width: 100%;
-  max-width: 430px;
-  padding: 42px 36px 36px;
-  background: #ffffff;
-  border: 1px solid #e8eaee;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(25, 35, 50, 0.045);
+  max-width: 440px;
+  padding: 38px 32px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 55px rgba(110, 91, 160, 0.13);
+  text-align: center;
+  animation: cardIn 0.7s ease both;
 }
 
-.heading {
-  margin: 0 0 34px;
-  font-size: 23px;
-  font-weight: 600;
-  letter-spacing: -0.6px;
-  line-height: 1.4;
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.icon {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 22px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #ffe0eb, #e8ddff);
+  font-size: 36px;
+}
+
+h1 {
+  margin: 0 0 12px;
+  font-size: 25px;
+  font-weight: 750;
+  line-height: 1.45;
+  letter-spacing: -0.5px;
+  background: linear-gradient(100deg, #e65c91, #8763d8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .description {
-  margin: -22px 0 30px;
-  color: #858b95;
+  margin: 0 0 28px;
+  color: #817b92;
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.8;
 }
 
 label {
   display: block;
   margin-bottom: 10px;
+  color: #494259;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 650;
+  text-align: left;
 }
 
 .hint {
-  margin: 0 0 12px;
-  color: #858b95;
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-.input-wrap {
-  position: relative;
+  margin: -3px 0 12px;
+  color: #9690a4;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: left;
 }
 
 input {
+  display: block;
   width: 100%;
-  height: 50px;
+  height: 52px;
   padding: 0 15px;
-  border: 1px solid #dfe3e8;
-  border-radius: 6px;
-  background: #fafbfc;
-  color: #252a31;
+  border: 1.5px solid #e4ddef;
+  border-radius: 12px;
+  outline: none;
+  background: #fcfaff;
+  color: #39334a;
   font-family: inherit;
   font-size: 15px;
-  outline: none;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 input::placeholder {
-  color: #a5aab2;
+  color: #b6afc3;
 }
 
 input:focus {
-  border-color: #697b90;
-  background: #ffffff;
+  border-color: #b58be9;
+  box-shadow: 0 0 0 4px rgba(181, 139, 233, 0.13);
 }
 
 button {
   width: 100%;
-  height: 49px;
-  margin-top: 14px;
-  border: 1px solid #303b49;
-  border-radius: 6px;
-  background: #303b49;
-  color: #ffffff;
+  height: 51px;
+  margin-top: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(100deg, #ed78a6, #9a7be8);
+  box-shadow: 0 7px 18px rgba(171, 113, 203, 0.22);
+  color: white;
   font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
-  background: #202a36;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 23px rgba(171, 113, 203, 0.3);
 }
 
 button:active {
-  transform: translateY(1px);
+  transform: translateY(0);
 }
 
 #result {
-  margin-top: 22px;
-  color: #555f6c;
+  margin-top: 18px;
+  color: #d45b8b;
   font-size: 14px;
   line-height: 1.7;
-  text-align: center;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* Màn hình lời nhắn */
+/* Man hinh thong diep */
 #messageScreen {
   position: fixed;
   inset: 0;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  gap: 22px;
+  padding: 28px;
   background: #ffffff;
-  color: #30343b;
+  color: #34313c;
   text-align: center;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
 }
 
 #messageScreen.show {
@@ -147,13 +228,13 @@ button:active {
 }
 
 .message-line {
-  max-width: 650px;
-  font-family: Georgia, "Times New Roman", serif;
+  max-width: 680px;
+  font-family: "Segoe UI", Arial, sans-serif;
   font-size: clamp(23px, 5vw, 32px);
   line-height: 1.8;
   opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 1s ease, transform 1s ease;
+  transform: translateY(14px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
 .message-line.show {
@@ -162,22 +243,51 @@ button:active {
 }
 
 #secondLine {
-  margin-top: 22px;
   font-size: clamp(21px, 4.5vw, 28px);
 }
 
 @media (max-width: 480px) {
-  .card {
-    padding: 32px 24px 28px;
+  body {
+    padding: 18px;
   }
 
-  .heading {
-    font-size: 22px;
+  .card {
+    padding: 32px 23px 26px;
+    border-radius: 21px;
+  }
+
+  h1 {
+    font-size: 23px;
+  }
+
+  .heart-one {
+    top: 5%;
+    left: 5%;
+    font-size: 28px;
+  }
+
+  .star-one {
+    top: 7%;
+    right: 5%;
+    font-size: 25px;
+  }
+
+  .heart-two {
+    bottom: 5%;
+    right: 5%;
+    font-size: 27px;
+  }
+
+  .star-two {
+    bottom: 6%;
+    left: 5%;
+    font-size: 23px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
+    animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
 }
@@ -187,8 +297,15 @@ button:active {
 
 <body>
 
+<div class="decoration heart-one" aria-hidden="true">💗</div>
+<div class="decoration star-one" aria-hidden="true">✨</div>
+<div class="decoration heart-two" aria-hidden="true">💕</div>
+<div class="decoration star-two" aria-hidden="true">⭐</div>
+
 <main class="card" id="mainCard">
-  <h1 class="heading">Đón nhận sự bất ngờ sau khi nhập tên</h1>
+  <div class="icon" aria-hidden="true">💌</div>
+
+  <h1>Đón nhận sự bất ngờ sau khi nhập tên</h1>
 
   <p class="description">
     Đôi khi, một cái tên cũng đủ để mở ra điều thú vị.
@@ -202,17 +319,15 @@ button:active {
   Viết hoa chữ cái đầu mỗi từ. Ví dụ: Nguyễn Bỉnh Khiêm
 </p>
 
-<div class="input-wrap">
-  <input
-    id="name"
-    type="text"
-    placeholder="Nhập họ và tên của bạn"
-    autocomplete="off"
-    required
-  >
-</div>
+<input
+  id="name"
+  type="text"
+  placeholder="Nhập họ và tên của bạn"
+  autocomplete="off"
+  required
+>
 
-<button type="submit">Tiếp tục</button>
+<button type="submit">Tiếp tục ✨</button>
 ```
 
   </form>
@@ -222,11 +337,11 @@ button:active {
 
 <section id="messageScreen" aria-live="polite">
   <div class="message-line" id="firstLine">
-    Xem ra người đặc biệt nay đã xuất hiện rồi.
+    Xem ra ng&#432;&#7901;i &#273;&#7863;c bi&#7879;t nay &#273;&#227; xu&#7845;t hi&#7879;n r&#7891;i.
   </div>
 
   <div class="message-line" id="secondLine">
-    Tớ chờ bạn mãi, Phương Thanh ạ.
+    T&#7899; ch&#7901; b&#7841;n m&#227;i, Ph&#432;&#417;ng Thanh &#7841;.
   </div>
 </section>
 
@@ -251,16 +366,9 @@ document.getElementById("nameForm").addEventListener("submit", function(event) {
   if (locked) return;
 
   const name = normalizeName(document.getElementById("name").value);
-  const words = name.split(" ");
-  const target = ["nguyen", "thi", "phuong", "thanh"];
-
-  const isThanh =
-    words.length === 4 &&
-    target.every(word => words.includes(word));
-
   const result = document.getElementById("result");
 
-  if (!isThanh) {
+  if (name !== "nguyen thi phuong thanh") {
     result.textContent = "Có vẻ bạn chưa phải nhân vật chính của hôm nay.";
     return;
   }
@@ -275,13 +383,13 @@ document.getElementById("nameForm").addEventListener("submit", function(event) {
 
   screen.classList.add("show");
 
-  setTimeout(() => {
+  setTimeout(function() {
     firstLine.classList.add("show");
-  }, 400);
+  }, 500);
 
-  setTimeout(() => {
+  setTimeout(function() {
     secondLine.classList.add("show");
-  }, 2300);
+  }, 2500);
 });
 </script>
 
