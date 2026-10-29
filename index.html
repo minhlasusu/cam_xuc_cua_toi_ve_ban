@@ -5,119 +5,227 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Một câu hỏi nhỏ</title>
+
 <style>
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   padding: 24px;
   font-family: Arial, sans-serif;
   color: #293342;
-  background: linear-gradient(135deg, #eef2f7, #dce5ef);
+  background: linear-gradient(135deg, #edf1f6, #dce5ef);
+  transition: background 1.5s ease;
 }
+
 .card {
   width: 100%;
-  max-width: 410px;
-  padding: 40px 30px;
-  background: rgba(255,255,255,0.94);
-  border: 1px solid #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 12px 40px rgba(40,55,75,0.10);
+  max-width: 420px;
+  padding: 38px 30px;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(255,255,255,0.8);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(40,55,75,0.09);
   text-align: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
+
 h2 {
-  margin: 0 0 12px;
-  font-size: 25px;
+  margin: 0 0 25px;
+  font-size: 23px;
   font-weight: 600;
 }
-.subtitle {
-  margin-bottom: 28px;
-  color: #6b7788;
-  font-size: 15px;
-}
+
 label {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
   text-align: left;
   font-size: 14px;
   font-weight: 600;
 }
+
 .hint {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   color: #7b8491;
   text-align: left;
   font-size: 13px;
   line-height: 1.6;
 }
+
 input {
   width: 100%;
-  padding: 13px 14px;
+  padding: 13px;
   border: 1px solid #d5dce5;
-  border-radius: 9px;
+  border-radius: 8px;
   outline: none;
   font-size: 15px;
-  transition: border-color 0.2s;
+  background: white;
 }
+
 input:focus {
   border-color: #607d9b;
 }
+
 button {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 15px;
   padding: 13px;
   border: none;
-  border-radius: 9px;
+  border-radius: 8px;
   background: #354b63;
   color: white;
   font-size: 15px;
   cursor: pointer;
   transition: background 0.2s;
 }
+
 button:hover {
   background: #26394f;
 }
+
 #result {
-  margin-top: 24px;
-  font-size: 17px;
+  margin-top: 22px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+body.special {
+  background: #eee7dc;
+}
+
+body.special .card {
+  background: #fffdf8;
+  box-shadow: 0 15px 50px rgba(80,65,45,0.12);
+}
+
+#darkScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: #17191e;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+#darkScreen.active {
+  opacity: 1;
+}
+
+#specialMessage {
+  position: fixed;
+  inset: 0;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  text-align: center;
+  color: #f7f1e8;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, color 1.5s ease;
+}
+
+#specialMessage.visible {
+  opacity: 1;
+}
+
+#specialMessage.warm {
+  color: #4a4035;
+}
+
+#firstLine {
+  font-size: clamp(22px, 5vw, 30px);
   line-height: 1.6;
-  font-weight: 600;
+  transform: translateY(10px);
+  transition: transform 0.8s ease;
+}
+
+#secondLine {
+  max-width: 600px;
+  margin-top: 24px;
+  font-size: clamp(19px, 4.5vw, 25px);
+  line-height: 1.8;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+#secondLine.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#specialMessage.warm #firstLine {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 </style>
+
 </head>
+
 <body>
-<div class="card">
-  <h2>Một câu hỏi nhỏ</h2>
-  <p class="subtitle">Dành một chút thời gian để trả lời nhé.</p>
+
+<div class="card" id="mainCard">
+  <h2>Đón nhận sự bất ngờ sau khi nhập tên</h2>
 
   <form onsubmit="checkName(event)">
-    <label for="name">Họ và tên</label>
-    <p class="hint">
-      Vui lòng nhập đầy đủ họ và tên, viết hoa chữ cái đầu mỗi từ.<br>
-      Ví dụ: Nguyễn Thị Phương Thanh
-    </p>
-    <input
-      id="name"
-      type="text"
-      placeholder="Nhập họ và tên của bạn"
-      autocomplete="name"
-      required
-    >
-    <button type="submit">Xác nhận</button>
+    <label for="name">
+      Họ và tên
+    </label>
+
+```
+<p class="hint">
+  Viết hoa chữ cái đầu mỗi từ, VD: Nguyễn Bỉnh Khiêm
+</p>
+
+<input
+  id="name"
+  type="text"
+  placeholder="Nhập họ và tên"
+  autocomplete="off"
+  required
+>
+
+<button type="submit">Xác nhận</button>
+```
+
   </form>
 
   <div id="result" aria-live="polite"></div>
 </div>
 
-<script>
-function checkName(event) {
-  event.preventDefault();
+<div id="darkScreen"></div>
 
-  const name = document.getElementById("name").value
+<div id="specialMessage" aria-live="polite">
+  <div id="firstLine">
+    Xem ra hôm nay có người đặc biệt xuất hiện rồi.
+  </div>
+
+  <div id="secondLine">
+    T thật sự rất ấn tượng về bạn, Phương Thanh ạ.
+  </div>
+</div>
+
+<script>
+let locked = false;
+
+function normalizeName(value) {
+  return value
     .trim()
     .toLowerCase()
     .normalize("NFD")
@@ -126,6 +234,15 @@ function checkName(event) {
     .replace(/[^a-z\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function checkName(event) {
+  event.preventDefault();
+
+  if (locked) return;
+
+  const input = document.getElementById("name").value;
+  const name = normalizeName(input);
 
   const words = name.split(" ");
   const target = ["nguyen", "thi", "phuong", "thanh"];
@@ -134,10 +251,39 @@ function checkName(event) {
     words.length === 4 &&
     target.every(word => words.includes(word));
 
-  document.getElementById("result").textContent =
-    isThanh
-      ? "T thật sự rất ấn tượng về bạn."
-      : "T không ấn tượng về bạn lắm.";
+  const result = document.getElementById("result");
+
+  if (!isThanh) {
+    result.textContent =
+      "Có vẻ bạn chưa phải nhân vật chính của hôm nay.";
+    return;
+  }
+
+  locked = true;
+
+  const darkScreen = document.getElementById("darkScreen");
+  const message = document.getElementById("specialMessage");
+  const secondLine = document.getElementById("secondLine");
+
+  document.getElementById("mainCard").style.opacity = "0";
+
+  setTimeout(() => {
+    darkScreen.classList.add("active");
+  }, 100);
+
+  setTimeout(() => {
+    message.classList.add("visible");
+  }, 700);
+
+  setTimeout(() => {
+    darkScreen.classList.remove("active");
+    document.body.classList.add("special");
+    message.classList.add("warm");
+  }, 2100);
+
+  setTimeout(() => {
+    secondLine.classList.add("visible");
+  }, 3400);
 }
 </script>
 
