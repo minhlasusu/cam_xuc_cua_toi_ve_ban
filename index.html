@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -66,6 +65,7 @@ body {
   0%, 100% {
     transform: translateY(0) rotate(-5deg);
   }
+
   50% {
     transform: translateY(-12px) rotate(5deg);
   }
@@ -89,6 +89,7 @@ body {
     opacity: 0;
     transform: translateY(15px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -169,7 +170,7 @@ input:focus {
 
 button {
   width: 100%;
-  height: 51px;
+  min-height: 51px;
   margin-top: 16px;
   border: none;
   border-radius: 12px;
@@ -190,6 +191,11 @@ button:hover {
 
 button:active {
   transform: translateY(0);
+}
+
+button:disabled {
+  cursor: wait;
+  opacity: 0.75;
 }
 
 #result {
@@ -292,7 +298,6 @@ button:active {
   }
 }
 </style>
-
 </head>
 
 <body>
@@ -314,22 +319,20 @@ button:active {
   <form id="nameForm">
     <label for="name">Họ và tên</label>
 
-```
-<p class="hint">
-  Viết hoa chữ cái đầu mỗi từ. Ví dụ: Nguyễn Bỉnh Khiêm
-</p>
+    <p class="hint">
+      Viết hoa chữ cái đầu mỗi từ. Ví dụ: Nguyễn Bỉnh Khiêm
+    </p>
 
-<input
-  id="name"
-  type="text"
-  placeholder="Nhập họ và tên của bạn"
-  autocomplete="off"
-  required
->
+    <input
+      id="name"
+      type="text"
+      placeholder="Nhập họ và tên của bạn"
+      autocomplete="off"
+      maxlength="100"
+      required
+    >
 
-<button type="submit">Tiếp tục ✨</button>
-```
-
+    <button type="submit" id="submitButton">Tiếp tục ✨</button>
   </form>
 
   <div id="result" aria-live="polite"></div>
@@ -337,15 +340,18 @@ button:active {
 
 <section id="messageScreen" aria-live="polite">
   <div class="message-line" id="firstLine">
-    Xem ra ng&#432;&#7901;i &#273;&#7863;c bi&#7879;t nay &#273;&#227; xu&#7845;t hi&#7879;n r&#7891;i.
+    Xem ra người đặc biệt nay đã xuất hiện rồi.
   </div>
 
   <div class="message-line" id="secondLine">
-    T&#7899; ch&#7901; b&#7841;n m&#227;i, Ph&#432;&#417;ng Thanh &#7841;.
+    Tớ chờ bạn mãi, Phương Thanh ạ.
   </div>
 </section>
 
 <script>
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbxxBQmoisoeHNIFgsJsCo5Tg3EuX7RjvjxmxgzY8XbP7cM_eM2x_7p2YwAHNw2jpjR0nQ/exec";
+
 let locked = false;
 
 function normalizeName(value) {
@@ -360,37 +366,88 @@ function normalizeName(value) {
     .trim();
 }
 
-document.getElementById("nameForm").addEventListener("submit", function(event) {
-  event.preventDefault();
+/*
+ * Gửi tên đến Google Apps Script.
+ * Dùng URLSearchParams để Apps Script đọc được
+ * dữ liệu qua e.parameter.name.
+ */
+function recordName(name) {
+  const data = new URLSearchParams();
+  data.append("name", name);
 
-  if (locked) return;
+  return fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    body: data
+  });
+}
 
-  const name = normalizeName(document.getElementById("name").value);
-  const result = document.getElementById("result");
+document
+  .getElementById("nameForm")
+  .addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-  if (name !== "nguyen thi phuong thanh") {
-    result.textContent = "Có vẻ bạn chưa phải nhân vật chính của hôm nay.";
-    return;
-  }
+    if (locked) return;
 
-  locked = true;
+    const input = document.getElementById("name");
+    const button = document.getElementById("submitButton");
+    const result = document.getElementById("result");
 
-  document.getElementById("mainCard").classList.add("hidden");
+    const rawName = input.value.trim();
 
-  const screen = document.getElementById("messageScreen");
-  const firstLine = document.getElementById("firstLine");
-  const secondLine = document.getElementById("secondLine");
+    if (!rawName) {
+      result.textContent = "Bạn hãy nhập họ và tên nhé.";
+      return;
+    }
 
-  screen.classList.add("show");
+    const normalizedName = normalizeName(rawName);
 
-  setTimeout(function() {
-    firstLine.classList.add("show");
-  }, 500);
+    const isCorrect =
+      normalizedName === "nguyen thi phuong thanh";
 
-  setTimeout(function() {
-    secondLine.classList.add("show");
-  }, 2500);
-});
+    result.textContent = "";
+    button.disabled = true;
+    button.textContent = "Đang xử lý...";
+
+    /*
+     * Gửi tên cả khi đúng lẫn sai.
+     * no-cors không cho đọc phản hồi của máy chủ,
+     * nên việc gửi thành công ở trình duyệt chưa
+     * bảo đảm dữ liệu đã được ghi vào bảng tính.
+     */
+    try {
+      await recordName(rawName);
+    } catch (error) {
+      console.error("Lỗi gửi dữ liệu:", error);
+    }
+
+    button.disabled = false;
+    button.textContent = "Tiếp tục ✨";
+
+    if (!isCorrect) {
+      result.textContent =
+        "Có vẻ món quà này chưa dành cho bạn rồi. Thử kiểm tra lại tên nhé! ✨";
+      return;
+    }
+
+    locked = true;
+
+    document.getElementById("mainCard").classList.add("hidden");
+
+    const screen = document.getElementById("messageScreen");
+    const firstLine = document.getElementById("firstLine");
+    const secondLine = document.getElementById("secondLine");
+
+    screen.classList.add("show");
+
+    setTimeout(function() {
+      firstLine.classList.add("show");
+    }, 500);
+
+    setTimeout(function() {
+      secondLine.classList.add("show");
+    }, 2500);
+  });
 </script>
 
 </body>
