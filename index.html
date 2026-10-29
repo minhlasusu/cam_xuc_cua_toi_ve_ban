@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Một câu hỏi nhỏ 💗</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #fff0f5;
+  padding: 80px 20px;
+}
+.box {
+  max-width: 400px;
+  margin: auto;
+  background: white;
+  padding: 30px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px #0001;
+}
+input, button {
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+  width: 100%;
+}
+button {
+  background: #ff6b9a;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+#result {
+  color: #e84376;
+  font-size: 21px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>💌 Một câu hỏi nhỏ</h2>
+  <p>Bạn tên là gì?</p>
+  <input id="name" placeholder="Nhập họ và tên của bạn">
+  <button onclick="checkName()">Xác nhận 💗</button>
+  <div id="result"></div>
+</div>
+
+<script>
+function checkName() {
+  const name = document.getElementById("name").value
+    .trim()
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+  const target = "nguyễn thị phương thanh";
+
+  document.getElementById("result").textContent =
+    name === target
+      ? "T thật sự rất ấn tượng về bạn 💗"
+      : "T không ấn tượng về bạn lắm 😌";
+}
+</script>
+</body>
+</html>
