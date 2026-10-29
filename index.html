@@ -19,80 +19,96 @@ body {
   justify-content: center;
   padding: 24px;
   font-family: Arial, sans-serif;
-  color: #293342;
-  background: linear-gradient(135deg, #edf1f6, #dce5ef);
+  color: #303844;
+  background: linear-gradient(135deg, #edf1f5, #dfe6ed);
   transition: background 1.5s ease;
 }
 
 .card {
   width: 100%;
-  max-width: 420px;
-  padding: 38px 30px;
-  background: rgba(255,255,255,0.96);
-  border: 1px solid rgba(255,255,255,0.8);
-  border-radius: 16px;
-  box-shadow: 0 12px 40px rgba(40,55,75,0.09);
-  text-align: center;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  max-width: 390px;
+  padding: 34px 30px 30px;
+  background: #ffffff;
+  border: 1px solid rgba(255,255,255,0.9);
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(40,55,75,0.08);
 }
 
-h2 {
-  margin: 0 0 25px;
-  font-size: 23px;
+.heading {
+  margin: 0 0 30px;
+  text-align: center;
+  font-size: 22px;
   font-weight: 600;
+  letter-spacing: -0.4px;
 }
 
 label {
   display: block;
-  margin-bottom: 10px;
-  text-align: left;
+  margin-bottom: 9px;
   font-size: 14px;
   font-weight: 600;
 }
 
 .hint {
-  margin: 0 0 14px;
-  color: #7b8491;
-  text-align: left;
-  font-size: 13px;
+  margin: 0 0 13px;
+  color: #818995;
+  font-size: 12.5px;
   line-height: 1.6;
 }
 
 input {
+  display: block;
   width: 100%;
-  padding: 13px;
-  border: 1px solid #d5dce5;
-  border-radius: 8px;
+  height: 46px;
+  padding: 0 13px;
+  border: 1px solid #d8dee6;
+  border-radius: 7px;
   outline: none;
-  font-size: 15px;
-  background: white;
+  background: #fcfcfd;
+  color: #303844;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input::placeholder {
+  color: #a5acb5;
 }
 
 input:focus {
-  border-color: #607d9b;
+  border-color: #71869c;
+  box-shadow: 0 0 0 3px rgba(113,134,156,0.10);
+  background: #ffffff;
 }
 
 button {
+  display: block;
   width: 100%;
-  margin-top: 15px;
-  padding: 13px;
+  height: 45px;
+  margin-top: 16px;
   border: none;
-  border-radius: 8px;
-  background: #354b63;
+  border-radius: 7px;
+  background: #394b60;
   color: white;
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
 
 button:hover {
-  background: #26394f;
+  background: #29394c;
+}
+
+button:active {
+  transform: scale(0.99);
 }
 
 #result {
-  margin-top: 22px;
-  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
   line-height: 1.7;
+  color: #596574;
 }
 
 body.special {
@@ -101,7 +117,6 @@ body.special {
 
 body.special .card {
   background: #fffdf8;
-  box-shadow: 0 15px 50px rgba(80,65,45,0.12);
 }
 
 #darkScreen {
@@ -139,20 +154,29 @@ body.special .card {
 }
 
 #specialMessage.warm {
-  color: #4a4035;
+  color: #514638;
 }
 
 #firstLine {
-  font-size: clamp(22px, 5vw, 30px);
+  max-width: 600px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(24px, 5vw, 32px);
   line-height: 1.6;
+  opacity: 0;
   transform: translateY(10px);
-  transition: transform 0.8s ease;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+#specialMessage.visible #firstLine {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 #secondLine {
   max-width: 600px;
-  margin-top: 24px;
-  font-size: clamp(19px, 4.5vw, 25px);
+  margin-top: 25px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(21px, 4.5vw, 27px);
   line-height: 1.8;
   opacity: 0;
   transform: translateY(10px);
@@ -164,14 +188,19 @@ body.special .card {
   transform: translateY(0);
 }
 
-#specialMessage.warm #firstLine {
-  transform: translateY(0);
+@media (max-width: 480px) {
+  .card {
+    padding: 30px 23px 25px;
+  }
+
+  .heading {
+    font-size: 21px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
   }
 }
 </style>
@@ -181,12 +210,10 @@ body.special .card {
 <body>
 
 <div class="card" id="mainCard">
-  <h2>Đón nhận sự bất ngờ sau khi nhập tên</h2>
+  <h2 class="heading">Đón nhận sự bất ngờ sau khi nhập tên</h2>
 
   <form onsubmit="checkName(event)">
-    <label for="name">
-      Họ và tên
-    </label>
+    <label for="name">Họ và tên</label>
 
 ```
 <p class="hint">
@@ -196,7 +223,7 @@ body.special .card {
 <input
   id="name"
   type="text"
-  placeholder="Nhập họ và tên"
+  placeholder="Nhập họ và tên của bạn"
   autocomplete="off"
   required
 >
@@ -213,11 +240,11 @@ body.special .card {
 
 <div id="specialMessage" aria-live="polite">
   <div id="firstLine">
-    Xem ra hôm nay có người đặc biệt xuất hiện rồi.
+    Xem ra người đặc biệt nay đã xuất hiện rồi.
   </div>
 
   <div id="secondLine">
-    T thật sự rất ấn tượng về bạn, Phương Thanh ạ.
+    Tớ chờ bạn mãi, Phương Thanh ạ.
   </div>
 </div>
 
