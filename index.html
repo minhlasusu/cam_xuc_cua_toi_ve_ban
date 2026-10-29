@@ -1,71 +1,145 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Một câu hỏi nhỏ 💗</title>
+<title>Một câu hỏi nhỏ</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  background: #fff0f5;
-  padding: 80px 20px;
-}
-.box {
-  max-width: 400px;
-  margin: auto;
-  background: white;
-  padding: 30px 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px #0001;
-}
-input, button {
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 16px;
+* {
   box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  color: #293342;
+  background: linear-gradient(135deg, #eef2f7, #dce5ef);
+}
+.card {
   width: 100%;
+  max-width: 410px;
+  padding: 40px 30px;
+  background: rgba(255,255,255,0.94);
+  border: 1px solid #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(40,55,75,0.10);
+  text-align: center;
+}
+h2 {
+  margin: 0 0 12px;
+  font-size: 25px;
+  font-weight: 600;
+}
+.subtitle {
+  margin-bottom: 28px;
+  color: #6b7788;
+  font-size: 15px;
+}
+label {
+  display: block;
+  margin-bottom: 9px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+}
+.hint {
+  margin: 0 0 12px;
+  color: #7b8491;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.6;
+}
+input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #d5dce5;
+  border-radius: 9px;
+  outline: none;
+  font-size: 15px;
+  transition: border-color 0.2s;
+}
+input:focus {
+  border-color: #607d9b;
 }
 button {
-  background: #ff6b9a;
-  color: white;
+  width: 100%;
+  margin-top: 16px;
+  padding: 13px;
   border: none;
+  border-radius: 9px;
+  background: #354b63;
+  color: white;
+  font-size: 15px;
   cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #26394f;
 }
 #result {
-  color: #e84376;
-  font-size: 21px;
-  font-weight: bold;
-  margin-top: 20px;
+  margin-top: 24px;
+  font-size: 17px;
+  line-height: 1.6;
+  font-weight: 600;
 }
 </style>
 </head>
 <body>
-<div class="box">
-  <h2>💌 Một câu hỏi nhỏ</h2>
-  <p>Bạn tên là gì?</p>
-  <input id="name" placeholder="Nhập họ và tên của bạn">
-  <button onclick="checkName()">Xác nhận 💗</button>
-  <div id="result"></div>
+<div class="card">
+  <h2>Một câu hỏi nhỏ</h2>
+  <p class="subtitle">Dành một chút thời gian để trả lời nhé.</p>
+
+  <form onsubmit="checkName(event)">
+    <label for="name">Họ và tên</label>
+    <p class="hint">
+      Vui lòng nhập đầy đủ họ và tên, viết hoa chữ cái đầu mỗi từ.<br>
+      Ví dụ: Nguyễn Thị Phương Thanh
+    </p>
+    <input
+      id="name"
+      type="text"
+      placeholder="Nhập họ và tên của bạn"
+      autocomplete="name"
+      required
+    >
+    <button type="submit">Xác nhận</button>
+  </form>
+
+  <div id="result" aria-live="polite"></div>
 </div>
 
 <script>
-function checkName() {
+function checkName(event) {
+  event.preventDefault();
+
   const name = document.getElementById("name").value
     .trim()
-    .normalize("NFC")
     .toLowerCase()
-    .replace(/\s+/g, " ");
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-  const target = "nguyễn thị phương thanh";
+  const words = name.split(" ");
+  const target = ["nguyen", "thi", "phuong", "thanh"];
+
+  const isThanh =
+    words.length === 4 &&
+    target.every(word => words.includes(word));
 
   document.getElementById("result").textContent =
-    name === target
-      ? "T thật sự rất ấn tượng về bạn 💗"
-      : "T không ấn tượng về bạn lắm 😌";
+    isThanh
+      ? "T thật sự rất ấn tượng về bạn."
+      : "T không ấn tượng về bạn lắm.";
 }
 </script>
+
 </body>
 </html>
