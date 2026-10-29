@@ -15,186 +15,164 @@ body {
   margin: 0;
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 24px;
   font-family: Arial, sans-serif;
-  color: #303844;
-  background: linear-gradient(135deg, #edf1f5, #dfe6ed);
-  transition: background 1.5s ease;
+  color: #252a31;
+  background: #f4f5f7;
 }
 
 .card {
   width: 100%;
-  max-width: 390px;
-  padding: 34px 30px 30px;
+  max-width: 430px;
+  padding: 42px 36px 36px;
   background: #ffffff;
-  border: 1px solid rgba(255,255,255,0.9);
-  border-radius: 14px;
-  box-shadow: 0 12px 35px rgba(40,55,75,0.08);
+  border: 1px solid #e8eaee;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(25, 35, 50, 0.045);
 }
 
 .heading {
-  margin: 0 0 30px;
-  text-align: center;
-  font-size: 22px;
+  margin: 0 0 34px;
+  font-size: 23px;
   font-weight: 600;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.6px;
+  line-height: 1.4;
+}
+
+.description {
+  margin: -22px 0 30px;
+  color: #858b95;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 label {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
   font-size: 14px;
   font-weight: 600;
 }
 
 .hint {
-  margin: 0 0 13px;
-  color: #818995;
-  font-size: 12.5px;
-  line-height: 1.6;
+  margin: 0 0 12px;
+  color: #858b95;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.input-wrap {
+  position: relative;
 }
 
 input {
-  display: block;
   width: 100%;
-  height: 46px;
-  padding: 0 13px;
-  border: 1px solid #d8dee6;
-  border-radius: 7px;
+  height: 50px;
+  padding: 0 15px;
+  border: 1px solid #dfe3e8;
+  border-radius: 6px;
+  background: #fafbfc;
+  color: #252a31;
+  font-family: inherit;
+  font-size: 15px;
   outline: none;
-  background: #fcfcfd;
-  color: #303844;
-  font-size: 14px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 input::placeholder {
-  color: #a5acb5;
+  color: #a5aab2;
 }
 
 input:focus {
-  border-color: #71869c;
-  box-shadow: 0 0 0 3px rgba(113,134,156,0.10);
+  border-color: #697b90;
   background: #ffffff;
 }
 
 button {
-  display: block;
   width: 100%;
-  height: 45px;
-  margin-top: 16px;
-  border: none;
-  border-radius: 7px;
-  background: #394b60;
-  color: white;
+  height: 49px;
+  margin-top: 14px;
+  border: 1px solid #303b49;
+  border-radius: 6px;
+  background: #303b49;
+  color: #ffffff;
+  font-family: inherit;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
+  transition: background 0.2s;
 }
 
 button:hover {
-  background: #29394c;
+  background: #202a36;
 }
 
 button:active {
-  transform: scale(0.99);
+  transform: translateY(1px);
 }
 
 #result {
-  margin-top: 20px;
-  text-align: center;
+  margin-top: 22px;
+  color: #555f6c;
   font-size: 14px;
   line-height: 1.7;
-  color: #596574;
+  text-align: center;
 }
 
-body.special {
-  background: #eee7dc;
+.hidden {
+  display: none !important;
 }
 
-body.special .card {
-  background: #fffdf8;
-}
-
-#darkScreen {
+/* Màn hình lời nhắn */
+#messageScreen {
   position: fixed;
   inset: 0;
-  z-index: 10;
-  background: #17191e;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-}
-
-#darkScreen.active {
-  opacity: 1;
-}
-
-#specialMessage {
-  position: fixed;
-  inset: 0;
-  z-index: 11;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 30px;
+  background: #ffffff;
+  color: #30343b;
   text-align: center;
-  color: #f7f1e8;
+  visibility: hidden;
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.8s ease, color 1.5s ease;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
 }
 
-#specialMessage.visible {
+#messageScreen.show {
+  visibility: visible;
   opacity: 1;
 }
 
-#specialMessage.warm {
-  color: #514638;
-}
-
-#firstLine {
-  max-width: 600px;
+.message-line {
+  max-width: 650px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(24px, 5vw, 32px);
-  line-height: 1.6;
+  font-size: clamp(23px, 5vw, 32px);
+  line-height: 1.8;
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(12px);
+  transition: opacity 1s ease, transform 1s ease;
 }
 
-#specialMessage.visible #firstLine {
+.message-line.show {
   opacity: 1;
   transform: translateY(0);
 }
 
 #secondLine {
-  max-width: 600px;
-  margin-top: 25px;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(21px, 4.5vw, 27px);
-  line-height: 1.8;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 1s ease, transform 1s ease;
-}
-
-#secondLine.visible {
-  opacity: 1;
-  transform: translateY(0);
+  margin-top: 22px;
+  font-size: clamp(21px, 4.5vw, 28px);
 }
 
 @media (max-width: 480px) {
   .card {
-    padding: 30px 23px 25px;
+    padding: 32px 24px 28px;
   }
 
   .heading {
-    font-size: 21px;
+    font-size: 22px;
   }
 }
 
@@ -209,44 +187,48 @@ body.special .card {
 
 <body>
 
-<div class="card" id="mainCard">
-  <h2 class="heading">Đón nhận sự bất ngờ sau khi nhập tên</h2>
+<main class="card" id="mainCard">
+  <h1 class="heading">Đón nhận sự bất ngờ sau khi nhập tên</h1>
 
-  <form onsubmit="checkName(event)">
+  <p class="description">
+    Đôi khi, một cái tên cũng đủ để mở ra điều thú vị.
+  </p>
+
+  <form id="nameForm">
     <label for="name">Họ và tên</label>
 
 ```
 <p class="hint">
-  Viết hoa chữ cái đầu mỗi từ, VD: Nguyễn Bỉnh Khiêm
+  Viết hoa chữ cái đầu mỗi từ. Ví dụ: Nguyễn Bỉnh Khiêm
 </p>
 
-<input
-  id="name"
-  type="text"
-  placeholder="Nhập họ và tên của bạn"
-  autocomplete="off"
-  required
->
+<div class="input-wrap">
+  <input
+    id="name"
+    type="text"
+    placeholder="Nhập họ và tên của bạn"
+    autocomplete="off"
+    required
+  >
+</div>
 
-<button type="submit">Xác nhận</button>
+<button type="submit">Tiếp tục</button>
 ```
 
   </form>
 
   <div id="result" aria-live="polite"></div>
-</div>
+</main>
 
-<div id="darkScreen"></div>
-
-<div id="specialMessage" aria-live="polite">
-  <div id="firstLine">
+<section id="messageScreen" aria-live="polite">
+  <div class="message-line" id="firstLine">
     Xem ra người đặc biệt nay đã xuất hiện rồi.
   </div>
 
-  <div id="secondLine">
+  <div class="message-line" id="secondLine">
     Tớ chờ bạn mãi, Phương Thanh ạ.
   </div>
-</div>
+</section>
 
 <script>
 let locked = false;
@@ -263,14 +245,12 @@ function normalizeName(value) {
     .trim();
 }
 
-function checkName(event) {
+document.getElementById("nameForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
   if (locked) return;
 
-  const input = document.getElementById("name").value;
-  const name = normalizeName(input);
-
+  const name = normalizeName(document.getElementById("name").value);
   const words = name.split(" ");
   const target = ["nguyen", "thi", "phuong", "thanh"];
 
@@ -281,37 +261,28 @@ function checkName(event) {
   const result = document.getElementById("result");
 
   if (!isThanh) {
-    result.textContent =
-      "Có vẻ bạn chưa phải nhân vật chính của hôm nay.";
+    result.textContent = "Có vẻ bạn chưa phải nhân vật chính của hôm nay.";
     return;
   }
 
   locked = true;
 
-  const darkScreen = document.getElementById("darkScreen");
-  const message = document.getElementById("specialMessage");
+  document.getElementById("mainCard").classList.add("hidden");
+
+  const screen = document.getElementById("messageScreen");
+  const firstLine = document.getElementById("firstLine");
   const secondLine = document.getElementById("secondLine");
 
-  document.getElementById("mainCard").style.opacity = "0";
+  screen.classList.add("show");
 
   setTimeout(() => {
-    darkScreen.classList.add("active");
-  }, 100);
+    firstLine.classList.add("show");
+  }, 400);
 
   setTimeout(() => {
-    message.classList.add("visible");
-  }, 700);
-
-  setTimeout(() => {
-    darkScreen.classList.remove("active");
-    document.body.classList.add("special");
-    message.classList.add("warm");
-  }, 2100);
-
-  setTimeout(() => {
-    secondLine.classList.add("visible");
-  }, 3400);
-}
+    secondLine.classList.add("show");
+  }, 2300);
+});
 </script>
 
 </body>
