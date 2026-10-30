@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -339,13 +340,8 @@ button:disabled {
 </main>
 
 <section id="messageScreen" aria-live="polite">
-  <div class="message-line" id="firstLine">
-    Xem ra người đặc biệt nay đã xuất hiện rồi.
-  </div>
-
-  <div class="message-line" id="secondLine">
-    Tớ chờ bạn mãi, Phương Thanh ạ.
-  </div>
+  <div class="message-line" id="firstLine"></div>
+  <div class="message-line" id="secondLine"></div>
 </section>
 
 <script>
@@ -366,11 +362,6 @@ function normalizeName(value) {
     .trim();
 }
 
-/*
- * Gửi tên đến Google Apps Script.
- * Dùng URLSearchParams để Apps Script đọc được
- * dữ liệu qua e.parameter.name.
- */
 function recordName(name) {
   const data = new URLSearchParams();
   data.append("name", name);
@@ -385,58 +376,61 @@ function recordName(name) {
 document
   .getElementById("nameForm")
   .addEventListener("submit", async function(event) {
+
     event.preventDefault();
 
     if (locked) return;
 
     const input = document.getElementById("name");
     const button = document.getElementById("submitButton");
-    const result = document.getElementById("result");
 
     const rawName = input.value.trim();
 
-    if (!rawName) {
-      result.textContent = "Bạn hãy nhập họ và tên nhé.";
-      return;
-    }
+    if (!rawName) return;
 
     const normalizedName = normalizeName(rawName);
 
     const isCorrect =
       normalizedName === "nguyen thi phuong thanh";
 
-    result.textContent = "";
+    locked = true;
+
     button.disabled = true;
     button.textContent = "Đang xử lý...";
 
-    /*
-     * Gửi tên cả khi đúng lẫn sai.
-     * no-cors không cho đọc phản hồi của máy chủ,
-     * nên việc gửi thành công ở trình duyệt chưa
-     * bảo đảm dữ liệu đã được ghi vào bảng tính.
-     */
+    // Ghi nhận tên vào Google Sheets
     try {
       await recordName(rawName);
     } catch (error) {
       console.error("Lỗi gửi dữ liệu:", error);
     }
 
-    button.disabled = false;
-    button.textContent = "Tiếp tục ✨";
+    // Nội dung dành cho từng trường hợp
+    const firstLine = document.getElementById("firstLine");
+    const secondLine = document.getElementById("secondLine");
 
-    if (!isCorrect) {
-      result.textContent =
-        "Có vẻ món quà này chưa dành cho bạn rồi. Thử kiểm tra lại tên nhé! ✨";
-      return;
+    if (isCorrect) {
+
+      firstLine.textContent =
+        "Chủ tus đã chính thức trở thành nạn nhân của thần Cupid.";
+
+      secondLine.textContent =
+        "Một mũi tên, một chút rung động và một bông tulip dành riêng cho bạn. 🌷";
+
+    } else {
+
+      firstLine.textContent =
+        "Bạn vừa mở ra một điều bất ngờ nho nhỏ.";
+
+      secondLine.textContent =
+        "Chủ tus gửi bạn một chút niềm vui và chúc bạn luôn gặp những điều thật đẹp trong cuộc sống. ✨";
+
     }
 
-    locked = true;
-
+    // Hiện màn hình thông điệp
     document.getElementById("mainCard").classList.add("hidden");
 
     const screen = document.getElementById("messageScreen");
-    const firstLine = document.getElementById("firstLine");
-    const secondLine = document.getElementById("secondLine");
 
     screen.classList.add("show");
 
@@ -447,8 +441,10 @@ document
     setTimeout(function() {
       secondLine.classList.add("show");
     }, 2500);
+
   });
 </script>
 
 </body>
 </html>
+```
